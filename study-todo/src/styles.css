@@ -1,0 +1,23 @@
+* { box-sizing: border-box; }
+body { font-family: Arial, Helvetica, sans-serif; margin:0; padding:20px; background:#f5f7fb; }
+.app { max-width:760px; margin:0 auto; background:#fff; padding:20px; border-radius:8px; box-shadow:0 4px 14px rgba(13,38,59,0.08); }
+header h1 { margin:0 0 4px 0; }
+.muted { color:#555; margin:0 0 12px 0 }
+.add-form { display:flex; gap:8px; margin-bottom:12px }
+.add-form input[type="text"], .add-form input[type="time"] { padding:8px; border:1px solid #ddd; border-radius:6px; }
+.add-form input[type="text"] { flex:1 }
+.add-form button { padding:8px 12px; border:none; background:#2563eb; color:#fff; border-radius:6px }
+.filters { display:flex; gap:8px; margin-bottom:12px }
+.filters button { padding:6px 10px; border-radius:6px; border:1px solid #ddd; background:#fff }
+.filters button.active { background:#e8f0ff; border-color:#b6d1ff }
+.todo-list { list-style:none; margin:0; padding:0 }
+.todo-list li { display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid #f0f0f0 }
+.todo-list li.done .title { text-decoration:line-through; color:#888 }
+.left { display:flex; gap:10px; align-items:center }
+.title { font-weight:600 }
+.meta { margin-top:4px }
+.badge { display:inline-block; padding:2px 6px; border-radius:6px; background:#eef2ff; color:#1e3a8a; font-size:12px }
+.badge.lecture { background:#fff7ed; color:#92400e }
+.del { background:transparent; border:1px solid #f3f3f3; padding:6px 8px; border-radius:6px }
+.empty { color:#777; padding:14px; text-align:center }
+footer { margin-top:12px; color:#666 }
