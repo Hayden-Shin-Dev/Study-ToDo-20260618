@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>스터디 Todo (강의 09:00–18:00)</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>스터디 Todo</h1>
+      <p class="muted">아침 9시 ~ 저녁 6시 강의일 기준 스터디용</p>
+    </header>
+
+    <form id="addForm" class="add-form">
+      <input id="title" placeholder="할 일 입력 (예: 복습 30분)" />
+      <input id="time" type="time" />
+      <button>추가</button>
+    </form>
+
+    <div class="filters">
+      <button data-filter="all" class="active">전체</button>
+      <button data-filter="lecture">강의시간</button>
+      <button data-filter="outside">강의외</button>
+    </div>
+
+    <ul id="list" class="todo-list"></ul>
+    <footer><small>데이터는 서버(DB)에 저장됩니다. venv 활성화 후 pip install -r requirements.txt, python app.py로 실행하세요.</small></footer>
+  </div>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
