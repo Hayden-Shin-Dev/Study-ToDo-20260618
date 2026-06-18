@@ -3,31 +3,101 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>스터디 Todo (강의 09:00–18:00)</title>
+  <title>스터디 Todo — 강의 일정에 맞춘 개인 스터디 플래너</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-  <div class="app">
-    <header>
-      <h1>스터디 Todo</h1>
-      <p class="muted">아침 9시 ~ 저녁 6시 강의일 기준 스터디용</p>
+  <div class="site">
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <div class="logo">📚</div>
+          <div>
+            <h1>스터디 Todo</h1>
+            <p class="tagline">풀타임 강의(09:00–18:00) 일정에 최적화된 개인 스터디 플래너</p>
+          </div>
+        </div>
+        <nav class="nav">
+          <a href="#" class="btn ghost" onclick="location.reload();return false">새로고침</a>
+        </nav>
+      </div>
     </header>
 
-    <form id="addForm" class="add-form">
-      <input id="title" placeholder="할 일 입력 (예: 복습 30분)" />
-      <input id="time" type="time" />
-      <button>추가</button>
-    </form>
+    <main class="container">
+      <section class="panel grid">
+        <div class="panel-left">
+          <div class="card add-card">
+            <form id="addForm" class="add-form">
+              <div class="inputs">
+                <input id="title" placeholder="할 일 입력 (예: 복습 30분)" aria-label="할 일" />
+                <input id="time" type="time" aria-label="시간 (선택)" />
+              </div>
+              <div class="actions">
+                <button class="btn primary">추가</button>
+                <div class="filters" role="tablist">
+                  <button data-filter="all" class="filter active">전체</button>
+                  <button data-filter="lecture" class="filter">강의시간</button>
+                  <button data-filter="outside" class="filter">강의외</button>
+                </div>
+              </div>
+            </form>
+          </div>
 
-    <div class="filters">
-      <button data-filter="all" class="active">전체</button>
-      <button data-filter="lecture">강의시간</button>
-      <button data-filter="outside">강의외</button>
-    </div>
+          <div class="card list-card">
+            <ul id="list" class="todo-list"></ul>
+          </div>
+        </div>
 
-    <ul id="list" class="todo-list"></ul>
-    <footer><small>데이터는 서버(DB)에 저장됩니다. venv 활성화 후 pip install -r requirements.txt, python app.py로 실행하세요.</small></footer>
+        <aside class="panel-right">
+          <div class="card stats">
+            <h3>오늘 요약</h3>
+            <ul class="stat-list">
+              <li id="totalCount">총 항목: —</li>
+              <li id="lectureCount">강의시간 항목: —</li>
+              <li id="doneCount">완료된 항목: —</li>
+            </ul>
+          </div>
+
+          <div class="card help">
+            <h4>사용 팁</h4>
+            <ul>
+              <li>강의시간(09:00–18:00)에는 복습/정리 항목을 배치하세요.</li>
+              <li>시간 필드를 비워두면 시간 미지정 항목으로 저장됩니다.</li>
+              <li>데이터는 로컬 DB에 저장됩니다.</li>
+            </ul>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <small>로컬 실행용 — 개발용 서버에서 실행 중입니다.</small>
+      </div>
+    </footer>
   </div>
+
   <script src="/static/js/app.js"></script>
+  <script>
+    // 간단한 통계 렌더링: 앱의 refresh() 호출 후 DOM 업데이트를 위해 약간 확장
+    async function updateStats(){
+      try{
+        const res = await fetch('/api/todos');
+        const items = await res.json();
+        const total = items.length;
+        const lecture = items.filter(i=>i.time && (Number(i.time.split(':')[0])>=9 && Number(i.time.split(':')[0])<18)).length;
+        const done = items.filter(i=>i.done).length;
+        document.getElementById('totalCount').textContent = '총 항목: '+total;
+        document.getElementById('lectureCount').textContent = '강의시간 항목: '+lecture;
+        document.getElementById('doneCount').textContent = '완료된 항목: '+done;
+      }catch(e){/*ignore*/}
+    }
+    // refresh()는 app.js에서 정의되어 있음; 안전하게 hook
+    document.addEventListener('DOMContentLoaded', ()=>{ if(typeof refresh==='function'){ refresh().then(updateStats) } })
+    document.addEventListener('click', ()=>{ setTimeout(updateStats,200) })
+  </script>
 </body>
 </html>
